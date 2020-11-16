@@ -18,10 +18,8 @@ The `lexicon.txt` file is from cjhutto's Github project (https://github.com/cjhu
 2. The program creates a dictionary that maps each parameter to its three buckets (low, medium, and high), and for every song in the playlist I add to one of each parameter’s three buckets. At the end of this step, the dictionary contains a count of how many songs fall into the low, medium, and high buckets for each parameter.
 
 3. I then run through each of the 127,000 songs from `songs.txt` and use Naive Bayes to calculate the probability that each song belongs in the playlist. Essentially, I do MAP with Laplace smoothing (since there are so many parameters, it’s very likely that some of the buckets will have zero in them, so we need Laplace smoothing):
-
-`[#(X_1 = x_1 | Y = 1) + 1][#(X_2 =x_2 | Y = 1) + 1]...[#(X_n = x_n | Y = 1) + 1] / [#(Y = 1) + n]`
-
-  In this case, Y = 1 means the song is in the playlist! And n = 10, since there are 10 parameters (acousticness, danceability, energy, instrumentalness, liveness, valence, speechiness, mode, tempo, and loudness). The x_i for each parameter is either 0, 1, or 2, based on the buckets LOW, MED, and HIGH. To get the counts for each X_i, I just look into the dictionary, which maps each parameter to the number of songs in the playlist with that bucket value!
+`[#(X_1 = x_1 | Y = 1) + 1][#(X_2 = x_2 | Y = 1) + 1]...[#(X_n = x_n | Y = 1) + 1] / [#(Y = 1) + n]`
+In this case, Y = 1 means the song is in the playlist! And n = 10, since there are 10 parameters (acousticness, danceability, energy, instrumentalness, liveness, valence, speechiness, mode, tempo, and loudness). The x_i for each parameter is either 0, 1, or 2, based on the buckets LOW, MED, and HIGH. To get the counts for each X_i, I just look into the dictionary, which maps each parameter to the number of songs in the playlist with that bucket value!
 
 4. I put all of these probabilities into a list (as part of a tuple containing the track ID) and then sort the list in descending order according to the probability of each tuple. That means the items at the front of the list belong most in the “Create Similar” playlist.
 
