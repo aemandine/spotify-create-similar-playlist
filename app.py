@@ -20,6 +20,7 @@ PLAYLIST_LENGTH = 25
 LOW = 0
 MED = 1
 HIGH = 2
+NUM_BUCKETS = 3
 
 # Represents (parameter_name, MED_FLOOR, HIGH_FLOOR)
 PARAMETERS = [("acousticness", 0.33, 0.66),
@@ -122,7 +123,7 @@ def track_probability(track, frequency_buckets, num_tracks):
     for PARAMETER_NAME, MED_FLOOR, HIGH_FLOOR in PARAMETERS:
         bucket = track.get_bucket(PARAMETER_NAME, MED_FLOOR, HIGH_FLOOR)
         xj_prob = (frequency_buckets[PARAMETER_NAME][bucket] + 1) # Add 1 for Laplace smoothing
-        xj_prob /= (num_tracks * len(PARAMETERS) + len(PARAMETERS)) # Add 1 per parameter for Laplace smoothing
+        xj_prob /= (num_tracks * len(PARAMETERS) + NUM_BUCKETS) # Add 1 per bucket for Laplace smoothing
         prob *= xj_prob
     return prob
 
